@@ -1,14 +1,13 @@
 var angular_taglist_directive = angular.module('angular_taglist_directive', []);
 
-// TODO: allow attrs for CSS customization
 // TODO: autosuggest based on the results of a function
 // TODO: register w/ bower
 angular_taglist_directive.directive('taglist', function () {
     return {
         restrict: 'EA',
         replace: true,
-        scope: {tags: '=tagData'},
-        template: '<div class="taglist"><span class="tag" data-ng-repeat="tag in tags"><a href data-ng-click="deleteTag(tag)">x</a> <span>{{tag}}</span></span><input/><div class="tags_clear"></div></div>',
+        scope: {tags: '=tagData', taglistClass: '@taglistclass', tagitemClass: '@tagitemclass'},
+        template: '<div data-ng-class="custom_taglist_class"><span data-ng-class="custom_tag_class" data-ng-repeat="tag in tags"><a href data-ng-click="deleteTag(tag)">x</a> <span>{{tag}}</span></span><input/><div class="tags_clear"></div></div>',
         controller: ['$scope', function ($scope) {
             $scope.deleteTag = function (tag) {
                 for (var posn = 0; posn < $scope.tags.length; posn++) {
@@ -17,6 +16,13 @@ angular_taglist_directive.directive('taglist', function () {
                     }
                 }
             };
+
+            $scope.$watch('tagitemClass', function() {
+                $scope.custom_tag_class = $scope.tagitemClass ? "tag "+$scope.tagitemClass : "tag";
+            });
+            $scope.$watch('taglistClass', function() {
+                $scope.custom_taglist_class = $scope.taglistClass ? "taglist "+$scope.taglistClass : "taglist";
+            })
         }],
         link: function (scope, element, attrs) {
             input = angular.element(element[0].children[element[0].children.length - 2]);
