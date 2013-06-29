@@ -30,10 +30,10 @@ angular_taglist_directive.directive('taglist', function () {
             input.bind('keydown', function (evt) {
                 if (isAddDelimeter(evt)) {
                     evt.preventDefault();
-                    addTag(evt.srcElement);
-                } else if (isDeleteDelimiter(evt) && evt.srcElement.value.trim().length == 0) {
+                    addTag(this);
+                } else if (isDeleteDelimiter(evt) && this.value.trim().length == 0) {
                     evt.preventDefault();
-                    var maindiv = angular.element(evt.srcElement).parent()[0];
+                    var maindiv = angular.element(this).parent()[0];
                     var taglist = angular.element(maindiv).children();
                     if (taglist.length <= 2) {
                         return;
