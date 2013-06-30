@@ -1,0 +1,13 @@
+{
+  "name": "angular-taglist",
+  "version": "0.0.2",
+  "main": "js/angular-taglist-directive.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  'dependencies': {
+    'angular':'>=1.0.5'
+  }
+}

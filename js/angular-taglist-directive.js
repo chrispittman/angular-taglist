@@ -1,7 +1,5 @@
 var angular_taglist_directive = angular.module('angular_taglist_directive', []);
 
-// TODO: autosuggest based on the results of a function
-// TODO: register w/ bower
 angular_taglist_directive.directive('taglist', function () {
     return {
         restrict: 'EA',
