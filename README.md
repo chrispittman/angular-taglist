@@ -15,4 +15,4 @@ Available on bower as 'angular-taglist'.
 
 TODO
 ----
-* Autosuggest tags, based on suggestions from a hardocded list or the results of an expression
+* Autosuggest tags, based on suggestions from a hardcoded list or the results of an expression
