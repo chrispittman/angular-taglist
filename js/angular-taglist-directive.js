@@ -7,9 +7,6 @@ angular_taglist_directive.directive('taglist', function () {
         scope: {tags: '=tagData', taglistClass: '@taglistclass', tagitemClass: '@tagitemclass'},
         template: '<div data-ng-class="custom_taglist_class"><span data-ng-class="custom_tag_class" data-ng-repeat="tag in tags"><a href data-ng-click="deleteTag(tag)">x</a> <span>{{tag}}</span></span><input/><div class="tags_clear"></div></div>',
         controller: ['$scope', function ($scope) {
-            if (!$scope.tags) {
-                $scope.tags = [];
-            }
             $scope.deleteTag = function (tag) {
                 for (var posn = 0; posn < $scope.tags.length; posn++) {
                     if ($scope.tags[posn] === tag) {
@@ -65,6 +62,9 @@ angular_taglist_directive.directive('taglist', function () {
             }
 
             function addTag(element) {
+                if (!scope.tags) {
+                    scope.tags = [];
+                }
                 var val = element.value.trim();
                 if (val.length == 0) {
                     return;
