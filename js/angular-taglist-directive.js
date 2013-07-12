@@ -34,6 +34,9 @@ angular_taglist_directive.directive('taglist', function () {
             });
 
             function addTag(element) {
+                if (!scope.tags) {
+                    scope.tags = [];
+                }
                 var val = element.value.trim();
                 if (val.length == 0) {
                     return;
