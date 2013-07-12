@@ -5,61 +5,33 @@ angular_taglist_directive.directive('taglist', function () {
         restrict: 'EA',
         replace: true,
         scope: {tags: '=tagData', taglistClass: '@taglistclass', tagitemClass: '@tagitemclass'},
-        template: '<div data-ng-class="custom_taglist_class"><span data-ng-class="custom_tag_class" data-ng-repeat="tag in tags"><a href data-ng-click="deleteTag(tag)">x</a> <span>{{tag}}</span></span><input/><div class="tags_clear"></div></div>',
-        controller: ['$scope', function ($scope) {
-            $scope.deleteTag = function (tag) {
-                for (var posn = 0; posn < $scope.tags.length; posn++) {
-                    if ($scope.tags[posn] === tag) {
-                        $scope.tags.splice(posn, 1);
-                    }
-                }
-            };
-
-            $scope.$watch('tagitemClass', function() {
-                $scope.custom_tag_class = $scope.tagitemClass ? "tag "+$scope.tagitemClass : "tag";
-            });
-            $scope.$watch('taglistClass', function() {
-                $scope.custom_taglist_class = $scope.taglistClass ? "taglist "+$scope.taglistClass : "taglist";
-            })
-        }],
+        template: '<div class="taglist {{taglistClass}}">\
+        <span class="tag {{tagitemClass}}" data-ng-repeat="tag in tags">\
+        <a href data-ng-click="tags.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
+        <input/><div class="tags_clear"></div></div>',
         link: function (scope, element, attrs) {
-            input = angular.element(element[0].children[element[0].children.length - 2]);
             element.bind('click', function () {
-                var input = this.children[this.children.length - 2];
-                input.focus();
+                element[0].getElementsByTagName('input')[0].focus();
             });
+            var input = angular.element(element[0].getElementsByTagName('input')[0]);
             input.bind('blur', function () {
-                addTag(this)
-            });
-            input.bind('keydown', function (evt) {
-                if (isAddDelimeter(evt)) {
+                addTag(this);
+            }).bind('keydown', function (evt) {
+            	if (evt.altKey || evt.metaKey || evt.ctrlKey || evt.shiftKey) {
+            		return;
+                }
+                if (evt.which==188 || evt.which==13) { // 188 = comma, 13 = return
                     evt.preventDefault();
                     addTag(this);
-                } else if (isDeleteDelimiter(evt) && this.value.trim().length == 0) {
+                } else if (evt.which==8 /* 8 = delete */
+                     && this.value.trim().length == 0
+                     && element[0].getElementsByClassName('tag').length > 0) {
                     evt.preventDefault();
-                    var maindiv = angular.element(this).parent()[0];
-                    var taglist = angular.element(maindiv).children();
-                    if (taglist.length <= 2) {
-                        return;
-                    }
-                    deleteTagElement(angular.element(taglist[taglist.length - 3]));
+                    scope.$apply(function () {
+                        scope.tags.splice(scope.tags.length-1,1);
+                    });
                 }
             });
-
-            function isAddDelimeter(event) {
-                if (event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) {
-                    return false;
-                }
-                return event.which == 188 // comma
-                    || event.which == 13; // return
-            }
-
-            function isDeleteDelimiter(event) {
-                if (event.altKey || event.metaKey || event.ctrlKey || event.shiftKey) {
-                    return false;
-                }
-                return event.which == 8; // delete
-            }
 
             function addTag(element) {
                 var val = element.value.trim();
@@ -72,17 +44,6 @@ angular_taglist_directive.directive('taglist', function () {
                 scope.$apply(function () {
                     scope.tags.push(val);
                     element.value = "";
-                });
-            }
-
-            function deleteTagElement(element) {
-                var text = element.children()[1].textContent;
-                scope.$apply(function () {
-                    for (var posn = 0; posn < scope.tags.length; posn++) {
-                        if (scope.tags[posn] === text) {
-                            scope.tags.splice(posn, 1);
-                        }
-                    }
                 });
             }
         }
