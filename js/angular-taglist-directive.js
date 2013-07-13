@@ -4,7 +4,13 @@ angular_taglist_directive.directive('taglist', function () {
     return {
         restrict: 'EA',
         replace: true,
-        scope: {tags: '=tagData', taglistClass: '@taglistclass', tagitemClass: '@tagitemclass'},
+        scope: {
+        	tags: '=tagData', 
+        	taglistClass: '@taglistclass', 
+        	tagitemClass: '@tagitemclass',
+        	taglistInputStyle: '@taglistInputStyle',
+        	taglistInputNgRequired: '@taglistInputNgRequired',
+        },
         template: '<div class="taglist {{taglistClass}}">\
         <span class="tag {{tagitemClass}}" data-ng-repeat="tag in tags">\
         <a href data-ng-click="tags.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
@@ -13,7 +19,18 @@ angular_taglist_directive.directive('taglist', function () {
             element.bind('click', function () {
                 element[0].getElementsByTagName('input')[0].focus();
             });
+            
             var input = angular.element(element[0].getElementsByTagName('input')[0]);
+            
+            attrs.$observe('taglistInputStyle', function(value) {
+            	input.attr('style', value);
+            });
+            attrs.$observe('taglistInputNgRequired', function(value) {
+            	scope.$watch(function() {
+ 	           		input.attr('required', scope.$eval(value));
+            	});
+            });
+
             input.bind('blur', function () {
                 addTag(this);
             }).bind('keydown', function (evt) {
