@@ -4,18 +4,16 @@ angular_taglist_directive.directive('taglist', function () {
     return {
         restrict: 'EA',
         replace: true,
-        scope: {
-        	tags: '=tagData', 
-        	taglistClass: '@taglistclass', 
-        	tagitemClass: '@tagitemclass',
-        	taglistInputStyle: '@taglistInputStyle',
-        	taglistInputNgRequired: '@taglistInputNgRequired',
-        },
+        scope: true,
         template: '<div class="taglist {{taglistClass}}">\
         <span class="tag {{tagitemClass}}" data-ng-repeat="tag in tags">\
         <a href data-ng-click="tags.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
         <input/><div class="tags_clear"></div></div>',
         link: function (scope, element, attrs) {
+        	scope.tags = scope.$eval(attrs.tagData);
+        	scope.taglistClass = attrs.taglistclass;
+        	scope.tagitemClass = attrs.tagitemclass;
+        	
             element.bind('click', function () {
                 element[0].getElementsByTagName('input')[0].focus();
             });
