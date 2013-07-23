@@ -11,8 +11,9 @@ Examples
 
 Versions
 --------
-0.0.2 - initial public release
-0.0.4 - added style, ng-required
+* 0.0.2 - initial public release
+* 0.0.4 - added style, ng-required
+* 0.0.5 - bugfix
 
 Available on bower as 'angular-taglist'.
 

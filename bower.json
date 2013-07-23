@@ -1,6 +1,6 @@
 {
   "name": "angular-taglist",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "js/angular-taglist-directive.js",
   "ignore": [
     "**/.*",

@@ -28,7 +28,10 @@ angular_taglist_directive.directive('taglist', function () {
  	           		input.attr('required', scope.$eval(value));
             	});
             });
-
+            scope.$watch(attrs.tagData, function(value) {
+            	scope.tags = scope.$eval(attrs.tagData);
+            });
+            
             input.bind('blur', function () {
                 addTag(this);
             }).bind('keydown', function (evt) {
