@@ -4,33 +4,20 @@ angular_taglist_directive.directive('taglist', function () {
     return {
         restrict: 'EA',
         replace: true,
-        scope: true,
-        template: '<div class="taglist {{taglistClass}}">\
-        <span class="tag {{tagitemClass}}" data-ng-repeat="tag in tags">\
-        <a href data-ng-click="tags.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
-        <input/><div class="tags_clear"></div></div>',
-        link: function (scope, element, attrs) {
-        	scope.tags = scope.$eval(attrs.tagData);
-        	scope.taglistClass = attrs.taglistclass;
-        	scope.tagitemClass = attrs.tagitemclass;
-        	
+        scope: {
+        	tagData: '=',
+        	taglistInputNgRequired: '='
+        },
+        template: '<div class="taglist">\
+        <span class="tag" data-ng-repeat="tag in tagData">\
+        <a href data-ng-click="tagData.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
+        <input ng-required="taglistInputNgRequired"/><div class="tags_clear"></div></div>',
+        link: function (scope, element, attrs) {        	
             element.bind('click', function () {
                 element[0].getElementsByTagName('input')[0].focus();
             });
             
             var input = angular.element(element[0].getElementsByTagName('input')[0]);
-            
-            attrs.$observe('taglistInputStyle', function(value) {
-            	input.attr('style', value);
-            });
-            attrs.$observe('taglistInputNgRequired', function(value) {
-            	scope.$watch(function() {
- 	           		input.attr('required', scope.$eval(value));
-            	});
-            });
-            scope.$watch(attrs.tagData, function(value) {
-            	scope.tags = scope.$eval(attrs.tagData);
-            });
             
             input.bind('blur', function () {
                 addTag(this);
@@ -46,24 +33,24 @@ angular_taglist_directive.directive('taglist', function () {
                      && element[0].getElementsByClassName('tag').length > 0) {
                     evt.preventDefault();
                     scope.$apply(function () {
-                        scope.tags.splice(scope.tags.length-1,1);
+                        scope.tagData.splice(scope.tagData.length-1,1);
                     });
                 }
             });
 
             function addTag(element) {
-                if (!scope.tags) {
-                    scope.tags = [];
+                if (!scope.tagData) {
+                    scope.tagData = [];
                 }
                 var val = element.value.trim();
                 if (val.length == 0) {
                     return;
                 }
-                if (scope.tags.indexOf(val) >= 0) {
+                if (scope.tagData.indexOf(val) >= 0) {
                     return;
                 }
                 scope.$apply(function () {
-                    scope.tags.push(val);
+                    scope.tagData.push(val);
                     element.value = "";
                 });
             }
