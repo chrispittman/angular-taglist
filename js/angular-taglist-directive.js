@@ -6,18 +6,18 @@ angular_taglist_directive.directive('taglist', function () {
         replace: true,
         scope: {
         	tagData: '=',
-        	taglistInputNgRequired: '='
         },
+        transclude: true,
         template: '<div class="taglist">\
         <span class="tag" data-ng-repeat="tag in tagData">\
         <a href data-ng-click="tagData.splice($index, 1)">x</a> <span>{{tag}}</span></span>\
-        <input ng-required="taglistInputNgRequired"/><div class="tags_clear"></div></div>',
+        <div class="tag-input" ng-transclude></div><div class="tags_clear"></div></div>',
         link: function (scope, element, attrs) {        	
             element.bind('click', function () {
                 element[0].getElementsByTagName('input')[0].focus();
             });
             
-            var input = angular.element(element[0].getElementsByTagName('input')[0]);
+            var input = angular.element(element[0].getElementsByTagName('div')[0].getElementsByTagName('input')[0]);
             
             input.bind('blur', function () {
                 addTag(this);
