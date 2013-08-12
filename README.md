@@ -16,7 +16,7 @@ Drop a `taglist` tag into your HTML:
 
 If you want more control over the `<input>` tag in the tag list (for example, to add form validation or to set placeholder text), include it in the `<taglist>`:
 
-    <taglist tag-data="my_tag_array"><input ng-required="my_tag_array.length===0"/></taglist>
+    <taglist tag-data="my_tag_array"><input ng-required="my_tag_array.length==0"/></taglist>
 
 More examples [on Plunker](http://plnkr.co/edit/0vzZsn70SGQkIKKZoVEP?p=preview).
 
