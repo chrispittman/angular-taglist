@@ -1,11 +1,12 @@
 var angular_taglist_directive = angular.module('angular_taglist_directive', []);
 
-angular_taglist_directive.directive('taglist', function () {
+angular_taglist_directive.directive('taglist', ['$timeout', function ($timeout) {
     return {
         restrict: 'EA',
         replace: true,
         scope: {
-            tagData: '='
+            tagData: '=',
+            taglistBlurTimeout: '='
         },
         transclude: true,
         template: '<div class="taglist">\
@@ -14,11 +15,11 @@ angular_taglist_directive.directive('taglist', function () {
         <div class="tag-input" ng-transclude></div><div class="tags_clear"></div></div>',
         compile: function (tElement, tAttrs, transcludeFn) {
             return function (scope, element, attrs) {
-                transcludeFn(scope, function cloneConnectFn(cElement) {
-                    if (tElement[0].getElementsByTagName('div')[0].getElementsByTagName('input').length == 0) {
+                if (tElement[0].getElementsByTagName('div')[0].getElementsByTagName('input').length === 0) {
+                    transcludeFn(scope, function cloneConnectFn(cElement) {
                         angular.element(tElement[0].getElementsByTagName('div')[0]).append('<input/>');
-                    }
-                });
+                    });
+                }
 
                 element.bind('click', function () {
                     element[0].getElementsByTagName('input')[0].focus();
@@ -27,7 +28,13 @@ angular_taglist_directive.directive('taglist', function () {
                 var input = angular.element(element[0].getElementsByTagName('div')[0].getElementsByTagName('input')[0]);
 
                 input.bind('blur', function () {
-                    addTag(this);
+                    if (scope.taglistBlurTimeout) {
+                        $timeout(function() {
+                            addTag(input[0]);
+                        }, scope.taglistBlurTimeout);
+                    } else {
+                        addTag(input[0]);
+                    }
                 });
                 input.bind('keydown', function (evt) {
                     if (evt.altKey || evt.metaKey || evt.ctrlKey || evt.shiftKey) {
@@ -51,7 +58,7 @@ angular_taglist_directive.directive('taglist', function () {
                         scope.tagData = [];
                     }
                     var val = element.value.trim();
-                    if (val.length == 0) {
+                    if (val.length === 0) {
                         return;
                     }
                     if (scope.tagData.indexOf(val) >= 0) {
@@ -65,4 +72,4 @@ angular_taglist_directive.directive('taglist', function () {
             }
         }
     }
-});
+}]);
