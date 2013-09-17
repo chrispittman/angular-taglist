@@ -15,12 +15,6 @@ angular_taglist_directive.directive('taglist', ['$timeout', function ($timeout) 
         <div class="tag-input" ng-transclude></div><div class="tags_clear"></div></div>',
         compile: function (tElement, tAttrs, transcludeFn) {
             return function (scope, element, attrs) {
-                transcludeFn(scope, function cloneConnectFn(cElement) {
-                  if (cElement.length === 0 || cElement[0].nodeName!=="INPUT") {
-                    angular.element(tElement.find('div')[0]).append('<input/>');
-                  }
-                });
-
                 element.bind('click', function () {
                     element[0].getElementsByTagName('input')[0].focus();
                 });
