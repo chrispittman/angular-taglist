@@ -10,11 +10,11 @@ Download this github repo and include it in your code.  We're also available on 
 
 Include 'angular_taglist_directive' as a dependency in your angular module.
 
-Drop a `taglist` tag into your HTML:
+Drop a `taglist` tag into your HTML surrounding an `input`:
 
-    <taglist tag-data="my_tag_array"></taglist>
+    <taglist tag-data="my_tag_array"><input/></taglist>
 
-If you want more control over the `<input>` tag in the tag list (for example, to add form validation or to set placeholder text), include it in the `<taglist>`:
+If you want more control over the `<input>` tag in the tag list (for example, to add form validation or to set placeholder text), go for it:
 
     <taglist tag-data="my_tag_array"><input ng-required="my_tag_array.length==0"/></taglist>
 
