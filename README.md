@@ -47,4 +47,4 @@ Versions
 --------
 * 0.0.x - initial versions
 * 0.1.0 - rewrite & cleanup; all taglist attrs other than tag-data dropped in favor of giving direct access to the 'input' tag
-* 0.1.5 - adde taglist-blur-timeout attribute to support autosuggested tags
+* 0.1.5 - added taglist-blur-timeout attribute to support autosuggested tags
